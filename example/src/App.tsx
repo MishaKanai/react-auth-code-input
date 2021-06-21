@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import AuthCode from 'react-auth-code-input';
 import './index.css';
 
 const App = () => {
+  const [inputCode, setInputCode] = useState('')
   return (
     <div className='main'>
       <h1>React Auth Code Input</h1>
@@ -53,10 +54,11 @@ const App = () => <AuthCode internalLabelPrefix="authorization code" />
       </p>
       <AuthCode
         internalLabelPrefix="authorization code"
-        onChange={() => null}
+        onChange={setInputCode}
         characters={5}
         containerClassName='container'
         inputClassName='input'
+        RequiredErrorMessage={inputCode.length !== 5 ? <div style={{ color: 'darkred'}}>Required</div> : null}
       />
       <p>index.tsx</p>
       <code>

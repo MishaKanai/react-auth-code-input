@@ -3,6 +3,13 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 
+var getErrorMessageId = function () {
+  var id = 1;
+  return function () {
+    return 'authcode-errormessage-' + id++;
+  };
+}();
+
 var AuthCode = function AuthCode(_ref) {
   var _ref$characters = _ref.characters,
       characters = _ref$characters === void 0 ? 6 : _ref$characters,
@@ -14,7 +21,11 @@ var AuthCode = function AuthCode(_ref) {
       containerStyle = _ref.containerStyle,
       inputClassName = _ref.inputClassName,
       containerClassName = _ref.containerClassName,
-      internalLabelPrefix = _ref.internalLabelPrefix;
+      internalLabelPrefix = _ref.internalLabelPrefix,
+      RequiredErrorMessage = _ref.RequiredErrorMessage;
+  var errormessageId = React.useMemo(function () {
+    return getErrorMessageId();
+  }, []);
   var inputsRef = React.useRef([]);
   React.useEffect(function () {
     inputsRef.current[0].focus();
@@ -82,9 +93,12 @@ var AuthCode = function AuthCode(_ref) {
   var inputs = [];
 
   var _loop = function _loop(i) {
+    var _inputsRef$current, _inputsRef$current$i;
+
     inputs.push(React__default.createElement("input", {
       key: i,
       "aria-label": internalLabelPrefix + " character " + (i + 1) + " of " + characters,
+      "aria-describedby": !((_inputsRef$current = inputsRef.current) === null || _inputsRef$current === void 0 ? void 0 : (_inputsRef$current$i = _inputsRef$current[i]) === null || _inputsRef$current$i === void 0 ? void 0 : _inputsRef$current$i.value) && RequiredErrorMessage ? errormessageId : undefined,
       onChange: handleOnChange,
       onKeyDown: handleOnKeyDown,
       onFocus: handleOnFocus,
@@ -106,7 +120,9 @@ var AuthCode = function AuthCode(_ref) {
   return React__default.createElement("div", {
     className: containerClassName,
     style: containerStyle
-  }, inputs);
+  }, inputs, RequiredErrorMessage && React__default.createElement("div", {
+    id: errormessageId
+  }, RequiredErrorMessage));
 };
 
 module.exports = AuthCode;

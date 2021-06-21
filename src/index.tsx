@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 
 type Props = {
   characters?: number;
@@ -16,8 +16,15 @@ type Props = {
   inputClassName?: string;
   containerClassName?: string;
   internalLabelPrefix: string;
+  // Element to display below when the code is required, and the values are incomplete
+  RequiredErrorMessage?: JSX.Element | null;
 };
-
+const getErrorMessageId = (() => {
+  let id = 1;
+  return () => {
+    return 'authcode-errormessage-' + id++;
+  };
+})();
 const AuthCode: React.FC<Props> = ({
   characters = 6,
   allowedCharacters = '^[A-Za-z0-9]*$',
@@ -27,8 +34,10 @@ const AuthCode: React.FC<Props> = ({
   containerStyle,
   inputClassName,
   containerClassName,
-  internalLabelPrefix
+  internalLabelPrefix,
+  RequiredErrorMessage
 }) => {
+  const errormessageId = useMemo(() => getErrorMessageId(), []);
   const inputsRef = useRef<Array<HTMLInputElement>>([]);
 
   useEffect(() => {
@@ -90,7 +99,14 @@ const AuthCode: React.FC<Props> = ({
     inputs.push(
       <input
         key={i}
-        aria-label={`${internalLabelPrefix} character ${i + 1} of ${characters}`}
+        aria-label={`${internalLabelPrefix} character ${
+          i + 1
+        } of ${characters}`}
+        aria-describedby={
+          !inputsRef.current?.[i]?.value && RequiredErrorMessage
+            ? errormessageId
+            : undefined
+        }
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}
         onFocus={handleOnFocus}
@@ -107,6 +123,9 @@ const AuthCode: React.FC<Props> = ({
   return (
     <div className={containerClassName} style={containerStyle}>
       {inputs}
+      {RequiredErrorMessage && (
+        <div id={errormessageId}>{RequiredErrorMessage}</div>
+      )}
     </div>
   );
 };
