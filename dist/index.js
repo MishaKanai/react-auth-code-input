@@ -13,7 +13,8 @@ var AuthCode = function AuthCode(_ref) {
       inputStyle = _ref.inputStyle,
       containerStyle = _ref.containerStyle,
       inputClassName = _ref.inputClassName,
-      containerClassName = _ref.containerClassName;
+      containerClassName = _ref.containerClassName,
+      internalLabelPrefix = _ref.internalLabelPrefix;
   var inputsRef = React.useRef([]);
   React.useEffect(function () {
     inputsRef.current[0].focus();
@@ -83,6 +84,7 @@ var AuthCode = function AuthCode(_ref) {
   var _loop = function _loop(i) {
     inputs.push(React__default.createElement("input", {
       key: i,
+      "aria-label": internalLabelPrefix + " character " + (i + 1) + " of " + characters,
       onChange: handleOnChange,
       onKeyDown: handleOnKeyDown,
       onFocus: handleOnFocus,

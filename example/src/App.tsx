@@ -35,13 +35,13 @@ const App = () => {
         </a>
       </p>
       <h2>Default</h2>
-      <AuthCode onChange={() => null} />
+      <AuthCode internalLabelPrefix="authorization code" onChange={() => null} />
       <code>
         {`
 import React from 'react'
 import AuthCode from 'react-auth-code-input'
 
-const App = () => <AuthCode />
+const App = () => <AuthCode internalLabelPrefix="authorization code" />
         `}
       </code>
       <h2>Custom Styles</h2>
@@ -52,6 +52,7 @@ const App = () => <AuthCode />
         allowed characters.
       </p>
       <AuthCode
+        internalLabelPrefix="authorization code"
         onChange={() => null}
         characters={5}
         containerClassName='container'
@@ -65,6 +66,7 @@ import AuthCode from 'react-auth-code-input'
 
 const App = () => {
   return (<AuthCode
+    internalLabelPrefix="authorization code"
     characters={5}
     containerClassName='container'
     inputClassName='input'

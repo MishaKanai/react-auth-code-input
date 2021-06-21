@@ -15,6 +15,7 @@ type Props = {
   containerStyle?: React.CSSProperties;
   inputClassName?: string;
   containerClassName?: string;
+  internalLabelPrefix: string;
 };
 
 const AuthCode: React.FC<Props> = ({
@@ -25,7 +26,8 @@ const AuthCode: React.FC<Props> = ({
   inputStyle,
   containerStyle,
   inputClassName,
-  containerClassName
+  containerClassName,
+  internalLabelPrefix
 }) => {
   const inputsRef = useRef<Array<HTMLInputElement>>([]);
 
@@ -88,6 +90,7 @@ const AuthCode: React.FC<Props> = ({
     inputs.push(
       <input
         key={i}
+        aria-label={`${internalLabelPrefix} character ${i + 1} of ${characters}`}
         onChange={handleOnChange}
         onKeyDown={handleOnKeyDown}
         onFocus={handleOnFocus}
